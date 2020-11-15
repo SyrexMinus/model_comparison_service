@@ -13,9 +13,21 @@ A web service for visually comparing the performance of machine learning models.
 
 ### Main menu
 There you can see 3 columns:
-1. *Models* — models uploaded to the service. You can add your model by clicking "+".
-2. *Datasets* — test data used to evaluate models. You can add one more dataset by clicking "+".
-3. *Experiments* — result of evaluationg models on corresponding datasets. There you can see models comparison: histograms, diagrams based on calculated metrics.
+1. *Models* — models uploaded to the service. You can add your model by clicking "+" button.
+2. *Datasets* — test data used to evaluate models. You can add one more dataset by clicking "+" button.
+3. *Experiments* — result of testing and evaluating models on corresponding datasets. 
+
+### Experiments
+
+There you can see models comparison: histograms, diagrams based on calculated metrics.
+
+#### How to make experiment:
+1. Click "+" button in main menu.
+2. Select parameters for your model, model and corresponding dataset.
+3. Click "Ok" button.
+4. Done.
+
+- To *add new metrics*, you need to write *LaTeX code* and pass it through new *metrics adder*.
 
 ## API
 
