@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Blank</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% block sidebar %}
+            {% include "includes/sidebar.html" %}
+        {% endblock %}
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {% block topbar %}
+                    {% include "includes/topbar.html" %}
+                {% endblock %}
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">Panel</h1>
+
+
+                    <div class = "row">
+                        <div class="col-lg-4">
+                            <h3 class="h4 mb-4 text-gray-500">Models</h3>
+
+                            {% for um in uploaded_models %}
+                                <!-- Collapsable Card Example -->
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Accordion -->
+                                    <a href="#collapseModelCard{{um.id}}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                        <h6 class="m-0 font-weight-bold text-primary">{{ um.name }}</h6>
+                                    </a>
+                                    <!-- Card Content - Collapse -->
+                                    <div class="collapse" id="collapseModelCard{{um.id}}">
+                                        <div class="card-body">
+                                            {{ um.description }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <center>
+                                <a href="#" data-toggle="modal" data-target="#addModelModal" class="btn btn-primary btn-circle">
+                                    <i class="fas fa-plus"></i>
+                                </a> 
+                            </center>
+                               <!-- Add Model Modal-->
+                            <div class="modal fade bd-example-modal-lg" id="addModelModal" tabindex="-1" role="dialog" aria-labelledby="addModelModal"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add Model</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <form action="/panel/uploadModel/" method="post" enctype="multipart/form-data">
+                                            <div class="modal-body">
+                                            
+                                                <div class="form-group">
+                                                    <label for="model-name">Name:</label>
+                                                    <input type="text" class="form-control" id="model-name" name="name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="description">Description:</label>
+                                                    <textarea class="form-control" rows="5" id="description" name="description"></textarea>
+                                                </div> 
+                                                <div class="form-group">
+                                                    <label for="target-type">Target type:</label>
+                                                    <select class="form-control" id="target-type" name="target_type">
+                                                        <option>Regression</option>
+                                                        <option>Classification</option>
+                                                        <option>Binary classification</option>
+                                                        <option>Recommendation</option>
+                                                    </select>
+                                                </div> 
+                                                <div class="form-group">
+                                                    <label for="model-type">Model type:</label>
+                                                    <select class="form-control" id="model-type" name="model_type">
+                                                        <option>CatBoost</option>
+                                                        <option>Scikit-learn</option>
+                                                    </select>
+                                                </div> 
+                                                <div class="form-group">
+                                                    <label for="modelFileInput">Model file</label>
+                                                    <input type="file" class="form-control-file" id="modelFileInput" name="model_file">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputDescriptionInput">Scheme file (JSON)</label>
+                                                    <input type="file" class="form-control-file" id="inputDescriptionInput" name="scheme_file">
+                                                </div>
+                                                {% csrf_token %}
+                                            </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-primary" type="submit">Send</button> 
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h3 class="h3 mb-4 text-gray-400">Datasets</h3>
+
+                            {% for g_ds in datasets %}
+                                <!-- Collapsable Card Example -->
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Accordion -->
+                                    <a href="#collapseDataset{{ g_ds.first.dataset_group }}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseDataset">
+                                        <h6 class="m-0 font-weight-bold text-primary">{{ g_ds.first.dataset_group }}</h6>
+                                    </a>
+                                    <!-- Card Content - Collapse -->
+                                    <div class="collapse" id="collapseDataset{{ g_ds.first.dataset_group }}">
+                                        <div class="card-body">
+                                            {% for d in g_ds %}
+                                                {{ d.description }}
+                                                <br />
+                                            {% endfor %}
+                                            <br />
+                                            <b>API link: </b> <a href = "{{scheme}}://{{domain}}/panel/updateDataset/{{g_ds.first.dataset_group}}">{{scheme}}://{{domain}}/panel/updateDataset/{{g_ds.first.dataset_group}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <center>
+                                <a href="#" data-toggle="modal" data-target="#addDataModal" class="btn btn-primary btn-circle">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </center>
+                            <!-- Add Data Modal-->
+                            <div class="modal fade bd-example-modal-lg" id="addDataModal" tabindex="-1" role="dialog" aria-labelledby="addDataModal"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Create Dataset</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <form action="/panel/createDataset/" method="post" enctype="multipart/form-data">
+                                            <div class="modal-body">
+                                            
+                                                <div class="form-group">
+                                                    <label for="model-name">Data Flow Name:</label>
+                                                    <input type="text" class="form-control" id="model-name" name="name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="description">Description:</label>
+                                                    <textarea class="form-control" rows="5" id="description" name="description"></textarea>
+                                                </div> 
+                                                <div class="form-group">
+                                                    <label for="inputDescriptionInput">Data description file (JSON)</label>
+                                                    <input type="file" class="form-control-file" id="inputDescriptionInput" name="scheme_file">
+                                                </div>
+                                                {% csrf_token %}
+                                            </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-primary" type="submit">Create</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h3 class="h3 mb-4 text-gray-400">Experiments</h3>
+
+                            {% for exp in experiments %}
+                                <!-- Collapsable Card Example -->
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Accordion -->
+                                    <a href="#collapsibleExperiment{{exp.id}}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                        <h6 class="m-0 font-weight-bold text-primary">{{exp.name}}</h6>
+                                    </a>
+                                    <!-- Card Content - Collapse -->
+                                    <div class="collapse" id="collapsibleExperiment{{exp.id}}">
+                                        <div class="card-body">
+                                            {{exp.description}}
+                                            <br />
+                                            <a href = "{{scheme}}://{{domain}}/panel/experiment/{{exp.id}}">Go to the experiment page</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <center>
+                                <a href="#" data-toggle="modal" data-target="#createExperiment" class="btn btn-primary btn-circle">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </center>
+                            <!-- Add Experiment Modal-->
+                            <div class="modal fade bd-example-modal-lg" id="createExperiment" tabindex="-1" role="dialog" aria-labelledby="createExperiment"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add Experiment</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <form method="POST" action="/panel/createExperiment/">
+                                        <div class="modal-body">  
+                                            <div class="form-group">
+                                                <label for="experiment_name">Name:</label>
+                                                <input type="text" class="form-control" id="experiment_name" name="experiment_name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="experiment_description">Description:</label>
+                                                <textarea class="form-control" rows="5" id="experiment_description" name="experiment_description"></textarea>
+                                            </div> 
+                                            <p>Choose model: </p>
+                                            {% for um in uploaded_models %}
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="modelCheck{{um.id}}" name="modelCheck{{um.id}}">
+                                                <label class="custom-control-label" for="modelCheck{{um.id}}">{{um.name}}</label>
+                                            </div>
+                                            {% endfor %}
+                                            <hr />
+                                            <div class="form-group">
+                                                <label for="chose-dataset">Choose data flow:</label>
+                                                <select class="form-control" id="chose-dataset" name="dataset_group">
+                                                    {% for g_ds in datasets %}
+                                                        <option>{{ g_ds.first.dataset_group }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>       
+                                            {% csrf_token %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-primary" type="submit">Create</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+                {% block footer %}
+                    {% include "includes/footer.html" %}
+                {% endblock %}
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+    {% block logout_modal %}
+        {% include "includes/logout_modal.html" %}
+    {% endblock %}
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+</body>
+
+</html>

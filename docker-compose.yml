@@ -1,0 +1,40 @@
+version: "3.0"
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    volumes:
+      - ./volumes/models_estimator_data:/var/lib/postgresql/data
+
+  django:
+    build:
+      context: .
+    ports:
+      - "8005:8005"
+      - "8004:8004"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./volumes/static_volume:/django/static/
+    command: > 
+      sh -c "sh /django/docker-entrypoint.sh"
+    depends_on:
+      - db
+    environment:
+      - SERVER_IP=127.0.0.1
+      - DOMAIN=127.0.0.1:8080
+      - SCHEME=http
+      - MODE=debug
+
+  nginx:
+    image: nginx
+    ports:
+      - 8080:8080
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d
+      - ./volumes/static_volume:/mnt/static_files/
+    depends_on:
+      - django
+  

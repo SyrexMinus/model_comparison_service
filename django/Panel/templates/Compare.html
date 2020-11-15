@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Blank</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <style>
+        .highcharts-figure, .highcharts-data-table table {
+            min-width: 360px; 
+            max-width: 800px;
+            margin: 1em auto;
+        }
+
+        .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #EBEBEB;
+        margin: 10px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+        }
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: #555;
+        }
+        .highcharts-data-table th {
+        font-weight: 600;
+            padding: 0.5em;
+        }
+        .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+        .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+        .highcharts-data-table tr:hover {
+            background: #f1f7ff;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% block sidebar %}
+            {% include "includes/sidebar.html" %}
+        {% endblock %}
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                {% block topbar %}
+                    {% include "includes/topbar.html" %}
+                {% endblock %}
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                <h1 class="h3 mb-4 ml-16 text-gray-800">{{ experiment.name }}</h1>
+                <p class="mb-4 ml-16">{{experiment.description}}</p>
+
+                <div class = "row">
+                    {% for metric_name, models in data.items %}
+                    <div class="col-lg-6">
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid">
+                            <figure class="highcharts-figure">
+                                <div id="container_{{metric_name}}"></div>
+                            </figure>
+                        </div>
+                        <!-- /.container-fluid -->
+                    </div>
+                    {% endfor %}
+                </div>
+
+
+                <div class = "row">   
+                <div class="col-lg-3 ma-12 mb-6"></div>             
+                <div class="col-lg-6 ma-12 mb-6">
+                    <div class="card bg-info text-white shadow">
+                        <div class="card-body">
+                            There are no critical outlines
+                            <div class="text-white-50 small">smart analysis for model outliers finished</div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="col-lg-3 ma-12 mb-6"></div>
+                </div>
+
+                <div class = "row">   
+                <div class="col-lg-3 ma-12 mb-6"></div>             
+                <div class="col-lg-6 ma-12 mb-6">
+                    <br><br>
+                    <div id="fortable">
+                    </div>
+                </div> 
+                <div class="col-lg-3 ma-12 mb-6"></div>
+                </div>
+
+                
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+                {% block footer %}
+                    {% include "includes/footer.html" %}
+                {% endblock %}
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+    {% block logout_modal %}
+        {% include "includes/logout_modal.html" %}
+    {% endblock %}
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+    {% comment %} <script>
+        setTimeout(function () {
+            window.location.href = "/panel"; //will redirect to your blog page (an ex: blog.html)
+        }, 3000); //will call the function after 2 secs.
+    </script> {% endcomment %}
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+    <script>
+
+        let model_names = [
+            {% for model in models %}
+                "{{ model.name }}",
+            {% endfor %}
+        ]
+
+        let DATA = { // {metric: [model: [value]]}
+            {% for metric_name, models in data.items %}
+                {{metric_name}}: [
+                    {% for values in models %}
+                    {   
+                        name: "kek",
+                        data: {{values}},
+                    },
+                    {% endfor %}
+                ],
+            {% endfor %}
+        }
+
+        //let top = []
+       
+
+
+        for (let dkey in DATA) {
+            for (let i = 0; i < DATA[dkey].length; i++) {
+                DATA[dkey][i]["name"] = model_names[i];
+
+                if (model_names[i] == "CreditLimitPredictor") {
+                    for (let j = 0; j < DATA[dkey][i]["data"].length; j++) {
+                        DATA[dkey][i]["data"][j] /= 100;
+                    } 
+                }
+            }
+        }
+
+
+    
+
+        {% comment %} let categories = [
+            {% for dataset in datasets %}
+                "{{ dataset.upload_date }}",
+            {% endfor %}
+        ] {% endcomment %}
+
+        let categories = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'August']
+
+        categories.shift();
+
+        {% for metric_name, models in data.items %}
+
+            Highcharts.chart('container_{{metric_name}}', {
+                title: {
+                    text: 'Plot of ' + "{{metric_name}}"
+                },
+                yAxis: {
+                    title: {
+                        text: '{{metric_name}}'
+                    }
+                },
+                xAxis: {
+                    categories: categories,
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                    }
+                },
+
+                series: DATA["{{metric_name}}"], 
+                
+                
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+            });
+        {% endfor %}
+
+
+
+         let sum = {}
+
+        for (let metric in DATA) {
+            let dic = {}
+            for (let model in DATA[metric]) {
+                dic[DATA[metric][model]['name']] = DATA[metric][model].data[DATA[metric][model].data.length - 1]
+                sum[DATA[metric][model]['name']] = 0
+            }
+
+            // Create items array
+            var items = Object.keys(dic).map(function(key) {
+            return [key, dic[key]];
+            });
+
+            // Sort the array based on the second element
+            items.sort(function(first, second) {
+            return second[1] - first[1];
+            });
+
+            items.reverse();
+
+            // Create a new array with only the first 5 items
+            console.log(items);
+            for (let model in DATA[metric]) {
+                let i = 0;
+                for (let e in items) {
+                    if (items[e][0] == DATA[metric][model]['name']) {
+                        break
+                    }
+                    i += 1;
+                }
+                sum[DATA[metric][model]['name']] += (model_names.length - i) / (model_names.length - 1)
+            }
+
+        }
+
+        // Create items array
+        var ghr = Object.keys(sum).map(function(key) {
+        return [key, sum[key]];
+        });
+
+        // Sort the array based on the second element
+        ghr.sort(function(first, second) {
+        return second[1] - first[1];
+        });
+        
+        ghr.reverse();
+
+
+
+        function tableCreate() {
+            var body = document.getElementById('fortable');
+            var tbl = document.createElement('table');
+            if (ghr.length < 2) tbl.style.display = 'none';
+            tbl.style.width = '100%';
+            tbl.setAttribute('class', 'table');
+            var tbdy = document.createElement('tbody');
+            for (let item in ghr) {
+                var tr = document.createElement('tr');
+                for (var j = 0; j < 2; j++) {
+                        var td = document.createElement('td');
+                        td.appendChild(document.createTextNode(ghr[item][j]))
+                        tr.appendChild(td)
+                }
+                tbdy.appendChild(tr);
+            }
+            tbl.appendChild(tbdy);
+            body.appendChild(tbl)
+            }
+            tableCreate();
+    </script>
+</body>
+
+</html>
