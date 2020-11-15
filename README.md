@@ -13,35 +13,21 @@ A web service for visually comparing the performance of machine learning models.
 
 ### Main menu
 There you can see 3 columns:
-1. Models — models uploaded to the service. You can add your model by clicking "+".
-2. Datasets — test data used to evaluate models. You can add one more dataset by clicking "+".
-3. Experiments — result of evaluationg models on corresponding datasets. There you can see models comparison: histograms, diagrams based on calculated metrics.
-
-## API
-## Install 
-
-```
-insert commands
-```
-
-## Usage
-
-```
-insert commands
-```
+1. *Models* — models uploaded to the service. You can add your model by clicking "+".
+2. *Datasets* — test data used to evaluate models. You can add one more dataset by clicking "+".
+3. *Experiments* — result of evaluationg models on corresponding datasets. There you can see models comparison: histograms, diagrams based on calculated metrics.
 
 ## API
 
-### someFunction(args)
+Used to upload test dataset.
 
-#### arg1
+### Requirements
 
-Type: `someType`
+- Python 3.6
 
-Description of argument
-
-### Returns an `someObject`:
-
-- `variableName` *(Type)* – Description of variable.
-  - `subVariable` *(Type)*
-    - `subSubVariable` *(Type)* - possible values
+### Usage
+1. Download *update_dataset.py*
+2. Open *cmd*
+3. Change the working direcory to the script folder using ```cd path```
+4. ```python update_dataset.py url file_path info```, where `url` is *URL to API*, `file_path` — *path to test dataset*, `info` — *any text*
+5. Done. Dataset uploaded.
