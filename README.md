@@ -11,6 +11,8 @@ A web service for visually comparing the performance of machine learning models.
 2) docker-compose build
 3) docker-compose up -d 
 Service will be started on port 8080. See https://127.0.0.1:8080/
+You can edit global veriables (domain, scheme) in docker-compose.yml file
+
 
 ## Web interface
 ### Authorization
