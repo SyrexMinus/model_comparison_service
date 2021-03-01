@@ -51,4 +51,4 @@ Used to upload test dataset.
 2. Open *cmd*
 3. Change the working direcory to the script folder using ```cd path```
 4. ```python update_dataset.py url file_path info```, where `url` is *URL to API*, `file_path` — *path to test dataset*, `info` — *any text*
-5. Done. Dataset uploaded.
+5. Done. Dataset uploaded. 
